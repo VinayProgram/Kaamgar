@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  kaamgar_db:
+    container_name: kaamgar_db
+    image: postgres:17
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: kaamgar_admin
+      POSTGRES_DB: kaamgar
+      POSTGRES_PASSWORD: root
+    volumes:
+      - kaamgar_db_data:/var/lib/postgresql/data
+
+volumes:
+  kaamgar_db_data:
