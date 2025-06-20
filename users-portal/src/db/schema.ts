@@ -1,1 +1,1 @@
-export * as users_login from '../login-module/entities/schema'
+export * as users_login from '../kaamgar-worker-login-module/entities/schema'
