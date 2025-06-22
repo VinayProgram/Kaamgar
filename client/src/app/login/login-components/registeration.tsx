@@ -1,16 +1,60 @@
+"use client";
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { RegisterationDTO } from "../dto/registeration";
+import { useState } from "react";
+import axios from "axios";
+import { registerationAPI } from "../fetch/register";
 
 export default function RegisterComponent() {
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setError(null);
+    setSuccess(null);
+
+    const formData = new FormData(event.currentTarget);
+    const password = formData.get("password") as string;
+    const confirmPassword = formData.get("confirmPassword") as string;
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
+    const data: RegisterationDTO = {
+      aadharNumber: formData.get("aadharCard") as string,
+      email: formData.get("email") as string, // If using email instead of username
+      passwordHash: password,
+      username: formData.get("username") as string,
+      phoneNumber: formData.get("phoneNumber") as string,
+      panNumber: formData.get("panNumber") as string,
+    };
+
+    try {
+      const res = await registerationAPI(data); // Change to your API endpoint
+      if (res.status === 201 || res.status === 200) {
+        setSuccess("Registration successful!");
+      } else {
+        setError("Registration failed. Please try again.");
+      }
+    } catch (err) {
+      setError("Something went wrong while registering.");
+    }
+  };
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-6 lg:flex-row lg:p-8">
-      {/* Left Section: Company Logo */}
+      {/* Left Section: Logo and Info */}
       <div className="flex flex-col items-center justify-center p-4 lg:w-1/2">
         <img
           alt="KaamGar"
-          src="/kaamgar.png" // Make sure this path is correct for your logo
+          src="/kaamgar.png"
           className="h-48 w-auto lg:h-80"
         />
         <h2 className="mt-6 text-center text-3xl font-extrabold tracking-tight text-gray-900">
@@ -21,7 +65,7 @@ export default function RegisterComponent() {
         </p>
       </div>
 
-      {/* Right Section: Registration Form */}
+      {/* Right Section: Form */}
       <div className="w-full max-w-md p-4 lg:w-1/2">
         <Card className="w-full">
           <CardHeader className="text-center">
@@ -29,10 +73,14 @@ export default function RegisterComponent() {
             <CardDescription>Enter your details below to create an account.</CardDescription>
           </CardHeader>
           <CardContent>
-            <form action="#" method="POST" className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <Label htmlFor="username">Username</Label>
                 <Input id="username" name="username" type="text" required autoComplete="username" />
+              </div>
+              <div>
+                <Label htmlFor="email">Email</Label>
+                <Input id="email" name="email" type="email" required autoComplete="email" />
               </div>
               <div>
                 <Label htmlFor="phoneNumber">Phone Number</Label>
@@ -54,6 +102,9 @@ export default function RegisterComponent() {
                 <Label htmlFor="confirmPassword">Confirm Password</Label>
                 <Input id="confirmPassword" name="confirmPassword" type="password" required autoComplete="new-password" />
               </div>
+
+              {error && <p className="text-red-500 text-sm">{error}</p>}
+              {success && <p className="text-green-600 text-sm">{success}</p>}
 
               <Button type="submit" className="w-full">
                 Register
