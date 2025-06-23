@@ -8,8 +8,10 @@ export class KaamgarRegisterService {
     constructor() { }
     async registerKaamgar(payload:kaamgarRegisterDTO ) {
         const encryptedPassword = await hashString(payload.passwordHash)
+        const email = payload.email.toLowerCase().trim();
         return await db.insert(schema.users_login.kaamgarUsers).values({
             ...payload,
+            email: email,
             passwordHash: encryptedPassword,
             isVerified: "pending", 
             userType: "regular"

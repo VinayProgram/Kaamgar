@@ -5,6 +5,6 @@ import axios from "axios";
 export const registerationAPI = async (data: RegisterationDTO) =>{
     return await api.post("/kaamgar-register", data)
     .then((response) => {
-        return response.data;
+        return response;
     })
 } 

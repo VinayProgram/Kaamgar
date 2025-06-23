@@ -1,6 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { KaamgarRegisterService } from './kaamgar.service';
-import { schemaTables } from 'src/common/importHelpers';
 import { kaamgarRegisterDTO } from './dto/registeration';
 
 @Controller('kaamgar-register')
@@ -11,7 +10,12 @@ export class KaamgarRegisterController {
   
   @Post("/")
   async registerKaamgar(@Body() kaamgarData:kaamgarRegisterDTO ) {    
-    return this.kaamgarRegisterService.registerKaamgar(kaamgarData);
+    const result = await this.kaamgarRegisterService.registerKaamgar(kaamgarData);
+    return {
+      status: "success",
+      message: "Kaamgar registered successfully",
+      data: result.rows,
+    }
   }
 
   @Get("/check")

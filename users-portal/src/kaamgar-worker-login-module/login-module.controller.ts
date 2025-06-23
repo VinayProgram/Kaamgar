@@ -5,6 +5,10 @@ import { LoginModuleService } from './login-module.service';
 export class LoginModuleController {
   constructor(private readonly loginModuleService: LoginModuleService) {}
 
+  @Post('login')
+  async login(@Body() body: { email: string; password: string }) {
+    return this.loginModuleService.login(body);
+  }
   
 
 }
