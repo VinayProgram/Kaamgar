@@ -10,7 +10,7 @@ import { LoginModuleService } from './login-module.service';
 
 @Controller('login-module')
 export class LoginModuleController {
-  constructor(private readonly loginModuleService: LoginModuleService) {}
+  constructor(private readonly loginModuleService: LoginModuleService) { }
 
   @Post('/')
   async login(
@@ -20,6 +20,12 @@ export class LoginModuleController {
     try {
       const result = await this.loginModuleService.login(body);
 
+      res.cookie('authToken', result.data?.token, {
+        httpOnly: true, // ✅ Not accessible via JS
+        secure: process.env.NODE_ENV === 'production', // Only over HTTPS
+        sameSite: 'lax', // Helps with CSRF
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      });
       // Set JWT token in custom header
       res.setHeader('authToken', result.data?.token || '');
 
