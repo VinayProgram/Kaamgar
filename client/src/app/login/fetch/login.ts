@@ -9,3 +9,9 @@ export const loginAPI = async (data: loginDTO) =>{
     })
 } 
 
+export const sessionAPI = async () =>{
+    return await api.get("/kaamgar-session")
+    .then((response) => {
+        return response;
+    })
+} 

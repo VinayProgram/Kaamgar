@@ -3,9 +3,16 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { loginAPI } from "../fetch/login";
+import { loginAPI, sessionAPI } from "../fetch/login";
+import React from "react";
 
 export default function LoginComponent() {
+  React.useEffect(()=>{
+    checkSession()
+  },[])
+  const checkSession = async () => {
+    await sessionAPI()
+  }
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
