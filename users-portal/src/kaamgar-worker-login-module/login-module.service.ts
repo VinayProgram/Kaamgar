@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { eq } from 'drizzle-orm';
 import { compareHash, hashString } from 'src/common/bycrypt';
 import { schemaTables } from 'src/common/importHelpers';
+import { signToken } from 'src/common/jwt';
 import { db } from 'src/db';
 
 @Injectable()
@@ -27,12 +28,18 @@ export class LoginModuleService {
                 data: null
             };
         }
+        const jwt = await signToken({
+            email: user.email,
+            userType: user.userType,
+            isVerified: user.isVerified,
+            id: user.id
+        })
         return {
             status: "success",
             message: "Login successful",
             data: {
                 email: user.email,
-                token: "dummy-jwt-token", // In a real application, generate a JWT token here
+                token: jwt, // In a real application, generate a JWT token here
             }
         };  
     }

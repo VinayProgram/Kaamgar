@@ -1,9 +1,25 @@
+'use client'; 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { loginAPI } from "../fetch/login";
 
 export default function LoginComponent() {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const email = formData.get("email") as string;  
+    const password = formData.get("password") as string;
+    const result = await loginAPI({ email, password })
+    if (result.status === 200) {
+      // Handle successful login, e.g., redirect or show a success message
+      console.log("Login successful:", result.data);
+    } else {
+      // Handle login failure, e.g., show an error message
+      console.error("Login failed:", result.data);
+    }
+  }
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -27,7 +43,7 @@ export default function LoginComponent() {
             */}
           </CardHeader>
           <CardContent>
-            <form action="#" method="POST" className="space-y-6">
+            <form action="#" method="POST" className="space-y-6" onSubmit={handleSubmit}>
               <div>
                 <Label htmlFor="email">Email address</Label>
                 <div className="mt-2">

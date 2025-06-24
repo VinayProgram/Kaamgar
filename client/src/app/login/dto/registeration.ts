@@ -8,3 +8,8 @@ export type RegisterationDTO = {
     isVerified?: "pending" | "verified" | "rejected" | undefined;
     userType?: "regular"
 }
+
+export type loginDTO = {
+    email: string;
+    password: string;
+}
