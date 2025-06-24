@@ -8,3 +8,5 @@ const api = axios.create({
 });
 
 export default api;
+
+export const pathToserver = 'http://localhost/node/'
