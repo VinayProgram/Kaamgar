@@ -11,7 +11,7 @@ export default function LoginComponent() {
     checkSession()
   },[])
   const checkSession = async () => {
-    await sessionAPI()
+    // await sessionAPI()
   }
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
