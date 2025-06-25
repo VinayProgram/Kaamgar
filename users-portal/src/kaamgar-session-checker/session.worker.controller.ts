@@ -11,7 +11,7 @@ export class sessionWorkerController {
     async getSessionStatus(
         @Req() req:Request
     ) {
-        const token = req.cookies;
+        const token = req.cookies.authToken;
         console.dir(token,{depth:100})
         return  this.sessionService.jwtVerify(token);
     }

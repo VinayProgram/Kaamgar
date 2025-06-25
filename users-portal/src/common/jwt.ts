@@ -10,7 +10,7 @@ const JWT_SECRET =  "your_default_secret_key" // Load from env in production
  */
 export function signToken(payload: {}): string {
   return jwt.sign(payload,JWT_SECRET,{
-    expiresIn:7
+    expiresIn:7* 24 * 60 * 60, // 7 days
   })
 }
 
