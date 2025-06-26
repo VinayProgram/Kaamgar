@@ -144,16 +144,39 @@ const ProfilePage = () => {
         )}
       </div>
 
-{/* Upload Profile Image */}
-      <div className="mb-4">
-        <Label>Upload Aadhar Card</Label>
-        <Input type="file" accept="image/*" onChange={handleImageUpload} />
-      </div>
-      {/* Upload Profile Image */}
-      <div className="mb-4">
-        <Label>Upload Pan Card</Label>
-        <Input type="file" accept="image/*" onChange={handleImageUpload} />
-      </div>
+
+      {/* Aadhaar Card Upload */}
+<div className="mb-4">
+  <Label htmlFor="aadhar">Upload Aadhaar Card</Label>
+  <Input
+    type="file"
+    accept="application/pdf,image/*"
+    id="aadhar"
+    onChange={(e) => {
+      const file = e.target.files?.[0];
+      if (file) {
+        console.log("Aadhaar uploaded:", file.name); // Replace with your handler
+      }
+    }}
+  />
+</div>
+
+{/* PAN Card Upload */}
+<div className="mb-4">
+  <Label htmlFor="pan">Upload PAN Card</Label>
+  <Input
+    type="file"
+    accept="application/pdf,image/*"
+    id="pan"
+    onChange={(e) => {
+      const file = e.target.files?.[0];
+      if (file) {
+        console.log("PAN uploaded:", file.name); // Replace with your handler
+      }
+    }}
+  />
+</div>
+
       {/* Save Button */}
       <Button className="w-full mt-4" disabled={selectedSkills.length === 0 || !bio}>
         Save and Activate Profile

@@ -13,7 +13,7 @@ import Link from "next/link";
 
 const Navbar = () => {
   return (
-    <nav className="w-full h-16 bg-white shadow-md flex items-center justify-between px-6 z-50">
+    <nav className="h-16 bg-white shadow-md flex flex-wrap items-center justify-between px-6 z-50">
       {/* Left Section: Sidebar Trigger + Logo */}
       <div className="flex items-center space-x-4">
         <SidebarTrigger />
@@ -21,7 +21,7 @@ const Navbar = () => {
       </div>
 
       {/* Right Section: Navigation Menu */}
-      <NavigationMenu>
+      <NavigationMenu >
         <NavigationMenuList className="space-x-4">
           <NavigationMenuItem>
             <NavigationMenuTrigger>Jobs</NavigationMenuTrigger>
