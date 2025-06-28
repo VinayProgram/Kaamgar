@@ -19,3 +19,4 @@ Kaamgar is a scalable, full-stack platform designed for discovering and managing
 
 ## 📦 Monorepo Structure (pnpm workspace)
 
+docker run -d -p 9092:9092 --name broker apache/kafka:latest

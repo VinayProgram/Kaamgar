@@ -1,13 +1,18 @@
 version: '3.8'
 
 services:
-  backend:
-    build:
-      context: ./users-portal  # adjust to your backend folder path
-    container_name: backend
-    ports:
-      - "3000:3000"
+  db:
+    container_name: kaamgar
+    image: postgis/postgis:latest  # ✅ Switch to PostGIS image
     restart: always
+    ports:
+      - "2010:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+      - db_data_kaamgar:/var/lib/postgresql/data
 
   broker:
     image: apache/kafka:latest
@@ -28,9 +33,12 @@ services:
 
   # nginx:
   #   build:
-  #     context: ./nginx  # folder where your Nginx Dockerfile + html + nginx.conf live
+  #     context: ./nginx
   #   container_name: nginx
   #   ports:
   #     - "8080:80"
   #   depends_on:
   #     - backend
+
+volumes:
+  db_data_kaamgar:
