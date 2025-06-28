@@ -7,7 +7,7 @@ import { Calendar, Home, Inbox, Search, Settings } from "lucide-react"
 const items = [
   {
     title: "Home",
-    url: "#",
+    url: "/kaamgar",
     icon: Home,
   },
   {
@@ -27,7 +27,7 @@ const items = [
   },
   {
     title: "Settings",
-    url: "#",
+    url: "/kaamgar/profile",
     icon: Settings,
   },
 ]

@@ -5,3 +5,5 @@ packages:
   - 'users-portal'
 
   - 'jobs-portal'
+
+  - 'consumers-portal'
