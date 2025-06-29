@@ -19,7 +19,6 @@ export class LoginModuleController {
   ) {
     try {
       const result = await this.loginModuleService.login(body);
-      console.log('Login result:', result);
       res.cookie('authToken', result.data?.token, {
         httpOnly: true, // ✅ Not accessible via JS
         secure: process.env.NODE_ENV === 'production', // Only over HTTPS
