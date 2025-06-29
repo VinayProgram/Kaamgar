@@ -26,7 +26,7 @@ export const kaamgarUsers = pgTable(
   "kaamgar_users",
   {
     id: serial("id").primaryKey(),
-    userId: uuid("user_id").notNull().unique(),
+    userId: uuid("user_id").defaultRandom().notNull().unique(),
     username: varchar("username", { length: 255 }).notNull().unique(),
     phoneNumber: varchar("phone_number", { length: 20 }).notNull().unique(),
     aadharNumber: varchar("aadhar_number", { length: 16 }).notNull().unique(),

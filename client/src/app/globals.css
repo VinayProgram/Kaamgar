@@ -143,3 +143,10 @@
     @apply bg-background text-foreground;
   }
 }
+
+@tailwind utilities;
+
+
+
+
+/* Animated gradient background */
