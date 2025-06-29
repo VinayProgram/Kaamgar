@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { compareHash, hashString } from '@km/commonlibs';
-import { schemaTables } from 'src/common/importHelpers';
-import { db } from 'src/db';
 import { signupDtoSchema } from './types/login.dto';
 import { eq } from 'drizzle-orm';
-import { signToken, verifyToken } from '@km/commonlibs';
+import { db } from '../db';
+import { schemaTables } from '../common/importHelpers';
+import { compareHash, hashString, signToken, verifyToken } from 'libs/encryption';
 
 @Injectable()
 export class LoginModuleService {

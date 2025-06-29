@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { db } from 'src/db';
-import * as schema from 'src/db/schema';
 import { kaamgarRegisterDTO } from './dto/registeration';
-import { hashString } from '@km/commonlibs';
+import { hashString } from 'libs/encryption';
+import { schemaTables } from '../common/importHelpers';
+import { db } from '../db';
 @Injectable()
 export class KaamgarRegisterService {
     constructor() { }
     async registerKaamgar(payload:kaamgarRegisterDTO ) {
         const encryptedPassword = await hashString(payload.passwordHash)
         const email = payload.email.toLowerCase().trim();
-        return await db.insert(schema.users_login.kaamgarUsers).values({
+        return await db.insert(schemaTables.users_login.kaamgarUsers).values({
             ...payload,
             email: email,
             passwordHash: encryptedPassword,

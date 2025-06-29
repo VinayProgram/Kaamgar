@@ -1,4 +1,4 @@
-import { schemaTables } from "src/common/importHelpers";
+import { schemaTables } from "../../common/importHelpers"
 
 export type kaamgarRegisterDTO =typeof schemaTables.users_login.kaamgarUsers.$inferInsert
 

@@ -1,6 +1,5 @@
 import { Body, Controller, Delete, HttpStatus, Post, Req, Res } from '@nestjs/common';
 import { LoginModuleService } from './login-module.service';
-import { schemaTables } from 'src/common/importHelpers';
 import { signupDtoSchema } from './types/login.dto';
 import { Request, Response } from 'express';
 

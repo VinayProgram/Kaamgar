@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { verifyToken } from '@km/commonlibs';
+import { verifyToken } from 'libs/encryption';
 
 @Injectable()
 export class SessionService {

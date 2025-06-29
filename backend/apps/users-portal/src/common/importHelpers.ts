@@ -1,2 +1,2 @@
-import * as schema from 'src/db/schema'; 
+import * as schema from '../db/schema'; 
 export const  schemaTables =  schema 
