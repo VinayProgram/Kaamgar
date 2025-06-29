@@ -1,5 +1,5 @@
 import { pgTable, uuid, text, numeric, boolean, timestamp, geometry } from "drizzle-orm/pg-core";
-import { categories } from "src/jobs/schema/schema";
+import { categories } from "../../jobs/schema/schema";
 
 
 export const alerts = pgTable("alerts", {

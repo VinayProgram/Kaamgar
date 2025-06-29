@@ -37,6 +37,15 @@
         "tsConfigPath": "apps/consumers-portal/tsconfig.app.json"
       }
     },
+    "jobs-portal": {
+      "type": "application",
+      "root": "apps/jobs-portal",
+      "entryFile": "main",
+      "sourceRoot": "apps/jobs-portal/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/jobs-portal/tsconfig.app.json"
+      }
+    },
     "users-portal": {
       "type": "application",
       "root": "apps/users-portal",
