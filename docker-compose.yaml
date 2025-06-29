@@ -26,6 +26,19 @@ services:
       POSTGRES_PASSWORD: password
     volumes:
       - db_data_kaamgar_consumer:/var/lib/postgresql/data
+  
+  dbjobs:
+    container_name: kaamgar_jobs
+    image: postgis/postgis:latest  # ✅ Switch to PostGIS image
+    restart: always
+    ports:
+      - "2012:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+      - db_data_kaamgar_jobs:/var/lib/postgresql/data
 
  
   # nginx:
@@ -40,3 +53,4 @@ services:
 volumes:
   db_data_kaamgar:
   db_data_kaamgar_consumer:
+  db_data_kaamgar_jobs:
