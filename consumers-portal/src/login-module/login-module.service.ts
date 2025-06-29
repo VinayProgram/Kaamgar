@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { compareHash, hashString } from 'src/common/bycrypt';
+import { compareHash, hashString } from '@km/commonlibs';
 import { schemaTables } from 'src/common/importHelpers';
 import { db } from 'src/db';
 import { signupDtoSchema } from './types/login.dto';
 import { eq } from 'drizzle-orm';
-import { signToken, verifyToken } from 'src/common/jwt';
+import { signToken, verifyToken } from '@km/commonlibs';
 
 @Injectable()
 export class LoginModuleService {
@@ -38,7 +38,9 @@ export class LoginModuleService {
             fullName: user[0].fullName,
             phoneNumber: user[0].phoneNumber,
             type: 'consumer',
-        })
+        },
+        'hehehehe'
+    )
         return {
             email: loginDto.email,
             token: token,
@@ -46,7 +48,7 @@ export class LoginModuleService {
     }
 
     async checkAuth(token: string) {
-        return await verifyToken(token)
+        return await verifyToken(token,'hehehehe')
         // This method can be used to check if the user is authenticated
         // You can implement your logic here, like checking a session or token
         return { message: 'User is authenticated' };

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { db } from 'src/db';
 import * as schema from 'src/db/schema';
 import { kaamgarRegisterDTO } from './dto/registeration';
-import { hashString } from 'src/common/bycrypt';
+import { hashString } from '@km/commonlibs';
 @Injectable()
 export class KaamgarRegisterService {
     constructor() { }

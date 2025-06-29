@@ -7,3 +7,5 @@ packages:
   - 'jobs-portal'
 
   - 'consumers-portal'
+
+  - 'commonlibs'

@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { eq } from 'drizzle-orm';
-import { compareHash, hashString } from 'src/common/bycrypt';
+import { compareHash, hashString } from '@km/commonlibs';
 import { schemaTables } from 'src/common/importHelpers';
-import { signToken } from 'src/common/jwt';
+import { signToken } from '@km/commonlibs';
 import { db } from 'src/db';
 
 @Injectable()
@@ -33,7 +33,9 @@ export class LoginModuleService {
             userType: user.userType,
             isVerified: user.isVerified,
             id: user.id
-        })
+        },
+        "YourSecretKeyHere",
+    )
         return {
             status: "success",
             message: "Login successful",
