@@ -37,6 +37,7 @@ export class LoginModuleService {
             email: user[0].email,
             fullName: user[0].fullName,
             phoneNumber: user[0].phoneNumber,
+            type: 'consumer',
         })
         return {
             email: loginDto.email,

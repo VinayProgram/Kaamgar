@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import api from "@/lib/axios";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 export default function KaamgarAuth() {
   const [isSignup, setIsSignup] = useState(false);
