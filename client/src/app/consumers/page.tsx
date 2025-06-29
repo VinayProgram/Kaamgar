@@ -1,14 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import api from "@/lib/axios";
+import { useRouter } from "next/router";
 
 export default function KaamgarAuth() {
   const [isSignup, setIsSignup] = useState(false);
+  const router = useRouter();
+  React.useEffect(() => {checkAuth()},[])
+  const checkAuth=async()=>{
+    await api.post("/consumers/login-module/check-auth")
 
+  }
   const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -25,18 +31,22 @@ export default function KaamgarAuth() {
       // Call your signup API here
     } else {
 
-      await api.post("/consumers/login-module/login", {
+      const response = await api.post("/consumers/login-module/login", {
         email: data.email,
         password: data.password})
       // Call your login API here
+      if(response.status === 200){
+        console.log("Login successful:", response.data);
+        router.push("/consumers/dashboard");
+      }
     }
   };
 
   return (
     <div className="relative flex items-center justify-center min-h-screen overflow-hidden">
-      <div className="absolute inset-0">
+      <div className="absolute inset-20">
         <img
-          src="/images/worker-consumer-bg.jpg"
+          src="/kaamgarback.avif"
           alt="Worker and Consumer"
           className="w-full h-full object-cover"
         />
@@ -44,13 +54,6 @@ export default function KaamgarAuth() {
         <div className="absolute inset-0 bg-gradient-overlay"></div>
       </div>
 
-      {/* Moving text reviews */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden text-white opacity-30">
-        <div className="whitespace-nowrap animate-marquee text-xl font-bold">
-          ★ Kaamgar connects workers & employers • Trusted by thousands • Changing lives across India ★ 
-          Kaamgar connects workers & employers • Trusted by thousands • Changing lives across India ★ 
-        </div>
-      </div>
 
       {/* Auth Form */}
       <form

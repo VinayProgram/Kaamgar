@@ -48,7 +48,7 @@ export class LoginModuleController {
 
   @Post('check-auth')
   async checkAuth(@Req() req:Request,@Res() res: Response) {
-    const token = req.cookies.authToken;
+    const token = req.cookies.consumerToken;
     if (!token) {
       return res.status(HttpStatus.UNAUTHORIZED).json({
         success: false,
