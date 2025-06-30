@@ -37,6 +37,15 @@
         "tsConfigPath": "apps/consumers-portal/tsconfig.app.json"
       }
     },
+    "guards": {
+      "type": "library",
+      "root": "libs/guards",
+      "entryFile": "index",
+      "sourceRoot": "libs/guards/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/guards/tsconfig.lib.json"
+      }
+    },
     "jobs-portal": {
       "type": "application",
       "root": "apps/jobs-portal",

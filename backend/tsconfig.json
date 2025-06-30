@@ -24,6 +24,12 @@
       ],
       "@app/common/*": [
         "libs/common/src/*"
+      ],
+      "@app/guards": [
+        "libs/guards/src"
+      ],
+      "@app/guards/*": [
+        "libs/guards/src/*"
       ]
     }
   }

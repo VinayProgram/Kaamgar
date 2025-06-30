@@ -2,6 +2,7 @@ import { Body, Controller, Delete, HttpStatus, Post, Req, Res } from '@nestjs/co
 import { LoginModuleService } from './login-module.service';
 import { signupDtoSchema } from './types/login.dto';
 import { Request, Response } from 'express';
+import { Public } from '@app/guards/gaurds.public.service';
 
 @Controller('login-module')
 export class LoginModuleController {
@@ -46,6 +47,7 @@ export class LoginModuleController {
   }
 
   @Post('check-auth')
+  @Public()
   async checkAuth(@Req() req:Request,@Res() res: Response) {
     const token = req.cookies.consumerToken;
     if (!token) {

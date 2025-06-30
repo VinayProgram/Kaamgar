@@ -24,7 +24,8 @@ export class LoginModuleService {
     async login(loginDto: { email: string; password: string }) {
         const user = await db.select().from(schemaTables.users_login.consumers)
             .where(eq(schemaTables.users_login.consumers.email, loginDto.email)).limit(1);
-        if (user.length === 0) {
+       
+            if (user.length === 0) {
             throw new Error('User not found');
         }
         const isPasswordValid = await compareHash(loginDto.password, user[0].passwordHash);

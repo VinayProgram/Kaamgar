@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
-    "@nestjs/core": "^11.0.1",
+    "@nestjs/core": "^11.1.3",
     "@nestjs/platform-express": "^11.0.1",
     "@types/bcrypt": "^5.0.2",
     "@types/cookie-parser": "^1.4.9",
@@ -91,7 +91,8 @@
       "<rootDir>/libs/"
     ],
     "moduleNameMapper": {
-      "^@app/common(|/.*)$": "<rootDir>/libs/common/src/$1"
+      "^@app/common(|/.*)$": "<rootDir>/libs/common/src/$1",
+      "^@app/guards(|/.*)$": "<rootDir>/libs/guards/src/$1"
     }
   }
 }
