@@ -9,11 +9,13 @@ export class LoginModuleController {
   constructor(private readonly loginModuleService: LoginModuleService) {}
 
   @Post('signup')
+  @Public()
   async signup(@Body() signupDto: signupDtoSchema) {
     return await this.loginModuleService.signup(signupDto);
   }
 
   @Post('login')
+  @Public()
   async login(@Body() loginDto: { email: string; password: string },@Res() res:Response) {
     const user = await this.loginModuleService.login(loginDto);
     if (!user) {
@@ -34,6 +36,7 @@ export class LoginModuleController {
   }
 
   @Delete('logout')
+  @Public()
   async logout(@Res() res: Response) {
     res.clearCookie('consumerToken', {
       httpOnly: true,
