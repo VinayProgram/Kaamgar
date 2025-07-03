@@ -30,7 +30,8 @@
       ],
       "@app/guards/*": [
         "libs/guards/src/*"
-      ]
+      ],
+      
     }
   }
 }

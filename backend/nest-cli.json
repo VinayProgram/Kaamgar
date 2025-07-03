@@ -1,24 +1,15 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "apps/backend/src",
+  "sourceRoot": "apps/consumers-portal/src",
   "compilerOptions": {
     "deleteOutDir": true,
     "webpack": true,
-    "tsConfigPath": "apps/backend/tsconfig.app.json"
+    "tsConfigPath": "apps/consumers-portal/tsconfig.app.json"
   },
   "monorepo": true,
-  "root": "apps/backend",
+  "root": "apps/consumers-portal",
   "projects": {
-    "backend": {
-      "type": "application",
-      "root": "apps/backend",
-      "entryFile": "main",
-      "sourceRoot": "apps/backend/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/backend/tsconfig.app.json"
-      }
-    },
     "common": {
       "type": "library",
       "root": "libs/common",
