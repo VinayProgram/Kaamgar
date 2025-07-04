@@ -1,12 +1,12 @@
 
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 @ObjectType()
-export class Job {
+export class Alert {
   @Field()
   id: string;
 
   @Field({ nullable: true })
-  location?: string; // or GeoJSON scalar
+  description?: string;
 
   @Field({ nullable: true })
   address?: string;
@@ -15,35 +15,29 @@ export class Job {
   pincode?: string;
 
   @Field({ nullable: true })
-  jobDescription?: string;
-
-  @Field(() => JSON, { nullable: true })
-  imagedata?: any;
-
-  @Field({ nullable: true })
   minPrice?: number;
 
   @Field({ nullable: true })
   maxPrice?: number;
 
   @Field({ nullable: true })
-  radiustofind?: number;
+  location?: string; // Or a custom scalar for GeoJSON/WKT
 
   @Field()
-  consumerId: string;
+  active: boolean;
 
   @Field()
-  categoryId: string;
+  selfDestroy: boolean;
 
   @Field()
-  status: string;
+  createdDate: Date;
 
   @Field()
-  isActive: boolean;
+  alertBy: string;
 
   @Field()
-  createdAt: Date;
+  alertUserType: string;
 
-  @Field()
-  updatedAt: Date;
+  @Field({ nullable: true })
+  categoryId?: string;
 }
