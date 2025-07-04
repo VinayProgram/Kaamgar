@@ -1,16 +1,14 @@
 import { Args, Int, ResolveField, Parent,Resolver , Query} from "@nestjs/graphql";
-import { Alert } from "../alerts/models/alerts.model"
 import { JobsService } from "./jobs.service";
 import { Public } from "@app/guards/gaurds.public.service";
+import { Job } from "./models/jobs.model";
 
-@Resolver(() => Alert)
+@Resolver(() => Job)
 export class JobsResolver {
-  constructor(
-    private authorsService: JobsService,
-  ) {}
+  constructor() {}
 
-  @Query(() => Alert)
-  async GetAllAlerts() {
+  @Query(() => Job)
+  async GetAllJobs() {
     return {
         id:1
     }

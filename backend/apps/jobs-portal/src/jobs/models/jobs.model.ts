@@ -1,5 +1,6 @@
 
 import { Field, Int, ObjectType } from '@nestjs/graphql';
+import GraphQLJSON from 'graphql-type-json';
 @ObjectType()
 export class Job {
   @Field()
@@ -17,7 +18,7 @@ export class Job {
   @Field({ nullable: true })
   jobDescription?: string;
 
-  @Field(() => JSON, { nullable: true })
+  @Field(() => GraphQLJSON, { nullable: true })
   imagedata?: any;
 
   @Field({ nullable: true })

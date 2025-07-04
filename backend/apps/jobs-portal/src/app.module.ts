@@ -5,9 +5,12 @@ import { AuthModule } from '@app/guards';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
+import GraphQLJSON from 'graphql-type-json';
+
 @Module({
   imports: [JobsModule, AlertsModule,AuthModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
+      resolvers: { JSON: GraphQLJSON },
       driver: ApolloDriver,
       autoSchemaFile: true,
       sortSchema: true,
