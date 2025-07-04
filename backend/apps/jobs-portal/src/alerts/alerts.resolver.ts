@@ -1,16 +1,17 @@
 import { Args, Int, ResolveField, Parent,Resolver , Query} from "@nestjs/graphql";
 import { Public } from "@app/guards/gaurds.public.service";
 import { Alert } from "./models/alerts.model";
+import { AlertsService } from "./alerts.service";
 
 @Resolver(() => Alert)
 export class AlertsResolver {
-  constructor() {}
+  constructor(
+    private readonly alertsService:AlertsService
+  ) {}
 
-  @Query(() => Alert)
+  @Query(() => [Alert])
   async GetAllAlerts() {
-    return {
-        id:1
-    }
+    return await this.alertsService.getAllAlerts()
   }
 
 //   @ResolveField()
