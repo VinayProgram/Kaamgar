@@ -9,7 +9,6 @@ export class JobsResolver {
     private authorsService: JobsService,
   ) {}
 
-  @Public()
   @Query(() => Alert)
   async GetAllAlerts() {
     return {

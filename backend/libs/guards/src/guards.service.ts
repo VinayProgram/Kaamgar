@@ -1,59 +1,76 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
+import { GqlExecutionContext } from '@nestjs/graphql';
 import { Request } from 'express';
 import { verifyToken } from 'libs/encryption';
-import { Reflector } from '@nestjs/core';
 import { IS_PUBLIC_KEY } from './gaurds.public.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-    constructor(private reflector: Reflector) {}
-  async canActivate(
-    context: ExecutionContext,
-  ): Promise<boolean> {
-    const request = context.switchToHttp().getRequest();
+  constructor(private readonly reflector: Reflector) {}
+
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    // Check for @Public() decorator
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
       context.getHandler(),
       context.getClass(),
     ]);
-    console.log(request)
-    if (isPublic) {
-      return true;
-    }
+
+    if (isPublic) return true;
+
+    // Handle both REST and GraphQL
+    const request = this.getRequest(context);
+
     const token = this.getTokenFromCookie(request);
     if (token) {
-      request.headers.user = {
-        token, // example payload
-      };
+      request.user = token; // verified payload
     } else {
-      console.log('No token found in cookies');
+      console.log('No valid token found in cookies');
+      return false; // or throw UnauthorizedException()
     }
 
     return true;
   }
 
-  private getTokenFromCookie(request: Request) {
-    if (request.cookies && request.cookies['consumerToken']) {
-        return verifyToken(request.cookies['consumerToken'], 'hehehehe');
+  /**
+   * Get request object for REST or GraphQL
+   */
+  private getRequest(context: ExecutionContext): Request {
+    console.log(context.getType())
+    if (context.getType() === 'http') {
+      return context.switchToHttp().getRequest();
+    } else if (context.getType()==='graphql' as string ) {
+      const gqlCtx = GqlExecutionContext.create(context);
+      return gqlCtx.getContext().req;
     }
-    else if(request.cookies && request.cookies['authToken']) {
-        return verifyToken(request.cookies['authToken'], 'YourSecretKeyHere');
+    throw new Error(`Unsupported request type: ${context.getType()}`);
+  }
+
+  /**
+   * Verify token from cookies
+   */
+  private getTokenFromCookie(request: Request): Authpayload | null {
+    if (request.cookies?.consumerToken) {
+      return verifyToken(request.cookies.consumerToken, 'hehehehe');
+    } else if (request.cookies?.authToken) {
+      return verifyToken(request.cookies.authToken, 'YourSecretKeyHere');
     }
     return null;
   }
 }
 
-declare global{
-    namespace Express{
-        interface Request{
-            user?:Authpayload
-        }
+declare global {
+  namespace Express {
+    interface Request {
+      user?: Authpayload;
     }
+  }
 }
 
 export interface Authpayload {
-    userId: string;
-    email: string;
-    fullName: string;
-    phoneNumber: string;
-    type: 'consumer' | 'kaamgar';
+  userId: string;
+  email: string;
+  fullName: string;
+  phoneNumber: string;
+  type: 'consumer' | 'kaamgar';
 }
