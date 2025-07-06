@@ -7,6 +7,9 @@ export class Alert {
   @Field()
   id: string;
 
+  @Field()
+  title: string; // 
+
   @Field({ nullable: true })
   description?: string;
 
@@ -48,8 +51,18 @@ export class Alert {
 
 @InputType()
 export class CreateAlertInput {
+   @Field()
+  title: string;  // ✅ Must be here
   @Field({ nullable: true })
   description?: string;
+  @Field()
+  skillId: string; // ✅ Must be here
+
+  @Field(() => Float)
+  lat: number;     // ✅ Must be here
+
+  @Field(() => Float)
+  lng: number;     // ✅ Must be here
 
   @Field(() => GraphQLJSON,{ nullable: true })
   location?: any; // You can define a GeoJSON type if needed
