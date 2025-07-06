@@ -12,8 +12,13 @@ import { SidebarTrigger } from "@/components/ui/sidebar"
 import Link from "next/link"
 import { Input } from "@/components/ui/input"
 import { User, PlusCircle, Briefcase, Bell, Settings } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { DialogContext } from "@/app/context/dailog-context"
+import React from "react"
+import CreateAlert from "./create-alert"
 
 export default function NavbarUsers() {
+  const DailogContext = React.useContext(DialogContext)
   return (
     <nav className="h-16 bg-white shadow-md flex items-center justify-between px-6 z-50 border-b">
       {/* Left: Sidebar & Logo */}
@@ -39,6 +44,10 @@ export default function NavbarUsers() {
           <span>Create Job</span>
         </Link>
 
+        <Link href={"#"} onClick={()=>console.log('he;;p')} className="flex items-center space-x-1 text-sm font-medium text-primary hover:underline">
+          <PlusCircle className="w-5 h-5" />
+          <span onClick={()=>DailogContext.setComponent(<CreateAlert/> )}>Create Alert</span>
+        </Link>
         {/* Manage Jobs */}
         <Link href="/jobs" className="flex items-center space-x-1 text-sm font-medium text-gray-700 hover:underline">
           <Briefcase className="w-5 h-5" />

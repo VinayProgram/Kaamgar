@@ -3,27 +3,29 @@
 import { useEffect, useState } from "react"
 import JobCategoriesBar from "./components/jobCategories"
 import KaamgarPortfolioCard from "./components/kaamgarPortfolioCard"
+import { DialogHeader } from "@/components/ui/dialog"
+import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription, DialogClose } from "@radix-ui/react-dialog"
 
 export default function UserDashboardPage() {
   const [category, setCategory] = useState("All")
   const [kaamgars, setKaamgars] = useState<any[]>([])
 
-  useEffect(() => {
-    const fetchKaamgars = async () => {
-      const res = await fetch("https://randomuser.me/api/?results=12")
-      const data = await res.json()
-      const mapped = data.results.map((user: any) => ({
-        id: user.login.uuid,
-        name: `${user.name.first} ${user.name.last}`,
-        photo: user.picture.large,
-        skill: ["Electrician", "Plumber", "Cook", "Painter", "Housekeeping"][Math.floor(Math.random() * 5)],
-        available: Math.random() > 0.3,
-      }))
-      setKaamgars(mapped)
-    }
+  // useEffect(() => {
+  //   const fetchKaamgars = async () => {
+  //     const res = await fetch("https://randomuser.me/api/?results=12")
+  //     const data = await res.json()
+  //     const mapped = data.results.map((user: any) => ({
+  //       id: user.login.uuid,
+  //       name: `${user.name.first} ${user.name.last}`,
+  //       photo: user.picture.large,
+  //       skill: ["Electrician", "Plumber", "Cook", "Painter", "Housekeeping"][Math.floor(Math.random() * 5)],
+  //       available: Math.random() > 0.3,
+  //     }))
+  //     setKaamgars(mapped)
+  //   }
 
-    fetchKaamgars()
-  }, [])
+  //   fetchKaamgars()
+  // }, [])
 
   const filteredKaamgars =
     category === "All"
@@ -38,6 +40,7 @@ export default function UserDashboardPage() {
         {filteredKaamgars.map((kg) => (
           <KaamgarPortfolioCard key={kg.id} kaamgar={kg} />
         ))}
+        
       </div>
     </div>
   )
