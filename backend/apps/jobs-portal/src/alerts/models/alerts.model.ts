@@ -1,5 +1,7 @@
 
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Field, Int, ObjectType ,InputType, Float, ID } from '@nestjs/graphql';
+import GraphQLJSON from 'graphql-type-json';
+
 @ObjectType()
 export class Alert {
   @Field()
@@ -40,4 +42,42 @@ export class Alert {
 
   @Field({ nullable: true })
   categoryId?: string;
+}
+
+
+
+@InputType()
+export class CreateAlertInput {
+  @Field({ nullable: true })
+  description?: string;
+
+  @Field(() => GraphQLJSON,{ nullable: true })
+  location?: any; // You can define a GeoJSON type if needed
+
+  @Field({ nullable: true })
+  address?: string;
+
+  @Field({ nullable: true })
+  pincode?: string;
+
+  @Field(() => Float, { nullable: true })
+  minPrice?: number;
+
+  @Field(() => Float, { nullable: true })
+  maxPrice?: number;
+
+  @Field({ nullable: true })
+  categoryId?: string;
+
+  @Field({ nullable: true })
+  active?: boolean;
+
+  @Field({ nullable: true })
+  selfDestroy?: boolean;
+
+  @Field()
+  alertBy: string;
+
+  @Field()
+  alertUserType: string;
 }
