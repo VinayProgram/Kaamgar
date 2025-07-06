@@ -1,6 +1,7 @@
 import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
 import { AlertsService } from "./alerts.service";
 import { Alert, CreateAlertInput } from "./models/alerts.model";
+import { seedData } from "./schema/categories-skills";
 @Resolver(() => Alert)
 export class AlertsResolver {
   constructor(private readonly alertsService: AlertsService) {}
@@ -14,6 +15,7 @@ export class AlertsResolver {
 
   @Query(() => [Alert])
   async GetAllAlerts(){
+    seedData()
     return await this.alertsService.getAllAlerts();
   }
 }
