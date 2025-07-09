@@ -51,46 +51,40 @@ export class Alert {
 
 @InputType()
 export class CreateAlertInput {
-   @Field()
-  title: string;  // ✅ Must be here
-  @Field({ nullable: true })
-  description?: string;
   @Field()
-  skillId: string; // ✅ Must be here
+  title: string;  // ✅ Must be here
 
-  @Field(() => Float)
-  lat: number;     // ✅ Must be here
+  @Field()
+  description?: string;
 
-  @Field(() => Float)
-  lng: number;     // ✅ Must be here
-
-  @Field(() => GraphQLJSON,{ nullable: true })
-  location?: any; // You can define a GeoJSON type if needed
-
-  @Field({ nullable: true })
+  @Field()
   address?: string;
 
-  @Field({ nullable: true })
+  @Field()
   pincode?: string;
 
-  @Field(() => Float, { nullable: true })
+  @Field()
   minPrice?: number;
 
-  @Field(() => Float, { nullable: true })
+  @Field()
   maxPrice?: number;
 
-  @Field({ nullable: true })
-  categoryId?: string;
+  @Field()
+  active: boolean;
 
-  @Field({ nullable: true })
-  active?: boolean;
-
-  @Field({ nullable: true })
-  selfDestroy?: boolean;
+  @Field()
+  selfDestroy: boolean;
 
   @Field()
   alertBy: string;
 
   @Field()
   alertUserType: string;
+
+  @Field()
+  categoryId?: string;
+
+  @Field(() => GraphQLJSON)
+  location:any;
+
 }

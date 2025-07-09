@@ -4,8 +4,9 @@ import { categories } from "../../jobs/schema/schema";
 
 export const alerts = pgTable("alerts", {
   id: uuid("id").primaryKey().defaultRandom(),
+  title: text("title").notNull(),
   description: text("description"),
-  location: geometry("location"), // Replace with GEOMETRY via raw SQL if needed
+  location: geometry("location" , {mode: "point" as any}), // Replace with GEOMETRY via raw SQL if needed
   address: text("address"),
   pincode: text("pincode"),
   minPrice: numeric("min_price"),

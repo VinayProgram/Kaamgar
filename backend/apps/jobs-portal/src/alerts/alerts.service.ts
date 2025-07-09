@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { eq } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 import { db } from '../db';
 import { alerts } from './schema/schema';
 
 @Injectable()
 export class AlertsService {
   async createAlert(data: {
+    title: string;
     description?: string;
-    location?: any; // adjust type if you have GeoJSON
+    location: {longitude: number, latitude: number}; // adjust type if you have GeoJSON
     address?: string;
     pincode?: string;
     minPrice?: number;
@@ -18,7 +19,11 @@ export class AlertsService {
     alertBy: string;
     alertUserType: string;
   }) {
-    return db.insert(alerts).values(data as typeof alerts.$inferInsert).returning();
+    // @ts-ignore
+    return db.insert(alerts).values({
+      ...data,
+      location:sql`ST_MakePoint(${data.location.longitude}, ${data.location.latitude})`
+    }).returning();
   }
 
   async getAlertById(id: string) {
