@@ -9,8 +9,7 @@ export class AlertsResolver {
   async createAlert(
     @Args('data') data: CreateAlertInput
   ) {
- 
-    console.log(data.location?.longitude)
+    console.log(data.location.latitude)
     return await this.alertsService.createAlert(data);
   }
 
