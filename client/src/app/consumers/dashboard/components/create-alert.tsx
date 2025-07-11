@@ -2,47 +2,16 @@
 
 import { DialogContext } from "@/app/context/dailog-context";
 import React, { useState, useEffect } from "react";
-import { gql, useMutation } from '@apollo/client'; // Import gql and useMutation
-
-// Define your GraphQL mutation string using gql tag
-const CREATE_ALERT_MUTATION = gql`
-  mutation CreateAlert(
-    $title: String!
-    $description: String
-    $categoryId: ID!
-    $skillId: ID!
-    $location: LocationInput!
-    $pincode: String
-    $minPrice: Float
-    $maxPrice: Float
-  ) {
-    createAlert(
-      input: {
-        title: $title
-        description: $description
-        categoryId: $categoryId
-        skillId: $skillId
-        location: $location
-        pincode: $pincode
-        minPrice: $minPrice
-        maxPrice: $maxPrice
-      }
-    ) {
-      id
-      title
-      # Add any other fields you want to receive back after mutation
-    }
-  }
-`;
+import { gql, useMutation } from '@apollo/client';
+import { CreateAlertDto } from "../graphql/create-alert.dto"; // Ensure this path is correct
+import { UserType } from "@/constants/enums"; // Ensure this path is correct
+import { createAlert } from "../graphql/create-alert";
 
 export default function CreateAlertForm() {
   const { setComponent } = React.useContext(DialogContext);
   const [latitude, setLatitude] = useState<number | string>("");
   const [longitude, setLongitude] = useState<number | string>("");
   const [locationError, setLocationError] = useState<string | null>(null);
-
-  // Use the useMutation hook
-  const [createAlert, { loading, error, data }] = useMutation(CREATE_ALERT_MUTATION);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -51,10 +20,20 @@ export default function CreateAlertForm() {
           setLatitude(position.coords.latitude);
           setLongitude(position.coords.longitude);
           setLocationError(null);
+          // For reverse geocoding (getting address from lat/lng),
+          // you would make an API call here.
+          // Example (pseudocode, requires a geocoding service like Google Maps API):
+          // fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.coords.latitude},${position.coords.longitude}&key=YOUR_API_KEY`)
+          //   .then(res => res.json())
+          //   .then(data => {
+          //     if (data.results && data.results.length > 0) {
+          //       // setAddress(data.results[0].formatted_address);
+          //     }
+          //   })
+          //   .catch(err => console.error("Reverse geocoding error:", err));
         },
         (error) => {
           console.error("Error getting location:", error);
-          // ... (your existing error handling for geolocation)
           setLocationError("Location permission denied or unavailable. Please enter manually.");
         }
       );
@@ -69,29 +48,33 @@ export default function CreateAlertForm() {
     const form = e.currentTarget;
     const formData = new FormData(form);
 
-    const variables = {
+    const variables: CreateAlertDto = {
       title: formData.get("title") as string,
-      description: formData.get("description") as string || null, // Optional fields can be null
+      description: formData.get("description") as string || "",
       categoryId: formData.get("category") as string,
-      skillId: formData.get("skill") as string,
+      skillId: formData.get("skillId") as string,
       location: {
-        lat: parseFloat(formData.get("lat") as string),
-        lng: parseFloat(formData.get("lng") as string),
+        latitude: parseFloat(formData.get("lat") as string),
+        longitude: parseFloat(formData.get("lng") as string),
       },
-      pincode: formData.get("pincode") as string || null,
-      minPrice: formData.get("minPrice") ? parseFloat(formData.get("minPrice") as string) : null,
-      maxPrice: formData.get("maxPrice") ? parseFloat(formData.get("maxPrice") as string) : null,
+      pincode: formData.get("pincode") as string || "",
+      minPrice: formData.get("minPrice") ? parseFloat(formData.get("minPrice") as string) : 0,
+      maxPrice: formData.get("maxPrice") ? parseFloat(formData.get("maxPrice") as string) : 0,
+      active: true,
+      address: formData.get("address") as string || "", // <-- CORRECTED: Get address directly from formData
+      alertBy: "someUserId", // You'll need to populate this dynamically from user context
+      alertUserType: UserType.CONSUMER,
+      selfDestroy: false,
     };
 
     try {
-      // Call the mutation function with the variables
-      const { data } = await createAlert({ variables });
+      const { data } = await createAlert( variables );
       console.log("GraphQL Mutation Result:", data);
       alert("✅ Alert created!");
       setComponent(null); // Close the dialog
-    } catch (err) {
+    } catch (err: any) {
       console.error("Failed to create alert:", err);
-      alert(`❌ Error creating alert: ${err}`);
+      alert(`❌ Error creating alert: ${err.message || err}`);
     }
   };
 
@@ -99,8 +82,65 @@ export default function CreateAlertForm() {
     <form onSubmit={handleSubmit} className="space-y-4 p-4 bg-white shadow-lg rounded-lg max-w-md mx-auto my-8">
       <h2 className="text-2xl font-bold text-gray-800 text-center mb-6">Create New Alert</h2>
 
-      {/* ... Your form fields ... */}
+      {/* Title */}
+      <div>
+        <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">Alert Title</label>
+        <input
+          id="title"
+          name="title"
+          type="text"
+          className="w-full border border-gray-300 px-4 py-2 rounded-md focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+          placeholder="e.g., Need a plumber"
+          required
+        />
+      </div>
 
+      {/* Description */}
+      <div>
+        <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">Description (Optional)</label>
+        <textarea
+          id="description"
+          name="description"
+          rows={3}
+          className="w-full border border-gray-300 px-4 py-2 rounded-md focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+          placeholder="Detailed description of your alert..."
+        ></textarea>
+      </div>
+
+      {/* Category (Example - you'd likely fetch these dynamically) */}
+      <div>
+        <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+        <select
+          id="category"
+          name="category"
+          className="w-full border border-gray-300 px-4 py-2 rounded-md focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+          required
+        >
+          <option value="">Select a category</option>
+          <option value="12830b0e-5a1d-43d4-b367-effef150bbc9">Plumbing</option>
+          <option value="b0d45612-804e-4512-8d66-7e91cde0b6dd">Electrical</option>
+          <option value="dbf4a5f1-e72d-47f2-a2af-e3339f346578">Carpentry</option>
+          {/* Add more categories dynamically */}
+        </select>
+      </div>
+
+      {/* Skill (Example - you'd likely fetch these dynamically based on category) */}
+      <div>
+        <label htmlFor="skillId" className="block text-sm font-medium text-gray-700 mb-1">Skill</label>
+        <select
+          id="skillId"
+          name="skillId"
+          className="w-full border border-gray-300 px-4 py-2 rounded-md focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+          required
+        >
+          <option value="">Select a skill</option>
+          <option value="skillId1">Drain Cleaning</option>
+          <option value="skillId2">Fixture Repair</option>
+          {/* Add more skills dynamically */}
+        </select>
+      </div>
+
+      {/* Latitude and Longitude */}
       <div className="flex gap-4">
         <div className="flex-1">
           <label htmlFor="lat" className="block text-sm font-medium text-gray-700 mb-1">Latitude</label>
@@ -135,16 +175,63 @@ export default function CreateAlertForm() {
         <p className="text-red-600 text-sm italic mt-2">{locationError}</p>
       )}
 
-      {/* ... Rest of your form fields ... */}
+      {/* Address */}
+      <div>
+        <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1">Address</label>
+        <input
+          id="address"
+          name="address" // IMPORTANT: This name attribute maps to formData.get("address")
+          type="text"
+          className="w-full border border-gray-300 px-4 py-2 rounded-md focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+          placeholder="e.g., 123 Main St, Anytown"
+          required // Make address required
+        />
+      </div>
+
+      {/* Pincode */}
+      <div>
+        <label htmlFor="pincode" className="block text-sm font-medium text-gray-700 mb-1">Pincode (Optional)</label>
+        <input
+          id="pincode"
+          name="pincode"
+          type="text"
+          className="w-full border border-gray-300 px-4 py-2 rounded-md focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+          placeholder="e.g., 123456"
+        />
+      </div>
+
+      {/* Min Price and Max Price */}
+      <div className="flex gap-4">
+        <div className="flex-1">
+          <label htmlFor="minPrice" className="block text-sm font-medium text-gray-700 mb-1">Min Price (Optional)</label>
+          <input
+            id="minPrice"
+            name="minPrice"
+            type="number"
+            step="0.01"
+            className="w-full border border-gray-300 px-4 py-2 rounded-md focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+            placeholder="e.g., 50.00"
+          />
+        </div>
+        <div className="flex-1">
+          <label htmlFor="maxPrice" className="block text-sm font-medium text-gray-700 mb-1">Max Price (Optional)</label>
+          <input
+            id="maxPrice"
+            name="maxPrice"
+            type="number"
+            step="0.01"
+            className="w-full border border-gray-300 px-4 py-2 rounded-md focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+            placeholder="e.g., 200.00"
+          />
+        </div>
+      </div>
 
       <button
         type="submit"
         className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-150 ease-in-out"
-        disabled={loading} // Disable button while loading
       >
-        {loading ? "Creating..." : "Create Alert"}
+        {"Create Alert"}
       </button>
-      {error && <p className="text-red-600 text-sm mt-2">Error: {error.message}</p>}
     </form>
   );
 }

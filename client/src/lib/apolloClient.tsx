@@ -1,8 +1,14 @@
 'use client'; // This directive makes this component a Client Component
 import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client';
+import { pathToserver } from './axios';
 
 const httpLink = new HttpLink({
-  uri: 'http://localhost/jobs/graphql', // Your GraphQL endpoint
+  uri: pathToserver + '/jobs/graphql', // Your GraphQL endpoint
+  credentials: 'include',
+  headers:{
+    'Content-Type': 'application/json',
+    'cookie': document.cookie
+  }
 });
 
 export const client = new ApolloClient({
@@ -11,8 +17,6 @@ export const client = new ApolloClient({
 });
 
 
-// src/app/ApolloWrapper.tsx
-// Or src/components/ApolloWrapper.tsx
 import { ApolloProvider } from '@apollo/client';
 import React from 'react'; // Import React for component definition
 

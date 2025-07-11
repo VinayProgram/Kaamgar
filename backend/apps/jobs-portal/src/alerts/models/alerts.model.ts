@@ -87,4 +87,7 @@ export class CreateAlertInput {
   @Field(() => GraphQLJSON)
   location:any;
 
+  @Field()
+  skillId: string;
+
 }
