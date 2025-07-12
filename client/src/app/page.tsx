@@ -3,7 +3,7 @@ import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 
-export default function page() {
+export default function Page() {
   const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
@@ -44,7 +44,10 @@ export default function page() {
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl font-bold text-gray-800 mb-6">About Kaamgar</h2>
             <p className="text-gray-600 text-lg">
-              Kaamgar is a modern platform built for the Indian workforce to easily discover short-term gigs and services. Whether you're a skilled worker or someone looking to get things done, Kaamgar ensures trust, transparency, and local reach.
+              Kaamgar is a modern platform built for the
+              Indian workforce to easily discover short-term gigs and services.
+              Whether you are a skilled worker or someone looking to get things done, 
+              Kaamgar ensures trust, transparency, and local reach.
             </p>
           </div>
         </section>

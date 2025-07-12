@@ -2,12 +2,11 @@
 
 import { DialogContext } from "@/app/context/dailog-context";
 import React, { useState, useEffect } from "react";
-import { gql, useMutation } from '@apollo/client';
 import { CreateAlertDto } from "../graphql/create-alert.dto"; // Ensure this path is correct
 import { UserType } from "@/constants/enums"; // Ensure this path is correct
 import { createAlert } from "../graphql/create-alert";
 import { useCategories, useSkills } from "../graphql/get-categories.dto";
-import { getSessionConsumer } from "../../common-api/get-session";
+import { useGetSessionConsumer } from "../../common-api/get-session";
 
 export default function CreateAlertForm() {
   const { setComponent } = React.useContext(DialogContext);
@@ -16,7 +15,7 @@ export default function CreateAlertForm() {
   const [locationError, setLocationError] = useState<string | null>(null);
   const { categories } = useCategories();
   const { skills } = useSkills();
-  const { data: session } = getSessionConsumer();
+  const { data: session } = useGetSessionConsumer();
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -74,11 +73,10 @@ export default function CreateAlertForm() {
     try {
       const { data } = await createAlert( variables );
       console.log("GraphQL Mutation Result:", data);
-      alert("✅ Alert created!");
+      // .success("✅ Alert created!");
       setComponent(null); // Close the dialog
-    } catch (err: any) {
+    } catch (err) {
       console.error("Failed to create alert:", err);
-      alert(`❌ Error creating alert: ${err.message || err}`);
     }
   };
 

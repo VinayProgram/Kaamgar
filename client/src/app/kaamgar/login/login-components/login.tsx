@@ -1,10 +1,11 @@
 'use client'; 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { loginAPI, sessionAPI } from "../fetch/login";
 import React from "react";
+import Image from "next/image";
 
 export default function LoginComponent() {
   React.useEffect(()=>{
@@ -30,7 +31,7 @@ export default function LoginComponent() {
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <img
+        <Image
           alt="KaamGar"
           src="/kaamgar.png"
           className="mx-auto h-40 w-auto"

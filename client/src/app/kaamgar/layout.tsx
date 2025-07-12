@@ -1,4 +1,4 @@
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import { SidebarProvider } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
 import Navbar from "@/components/navigation-menu"
 import { Calendar, Home, Inbox, Search, Settings } from "lucide-react"

@@ -6,8 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { RegisterationDTO } from "../dto/registeration";
 import { useState } from "react";
-import axios from "axios";
 import { registerationAPI } from "../fetch/register";
+import Image from "next/image";
 
 export default function RegisterComponent() {
   const [error, setError] = useState<string | null>(null);
@@ -44,6 +44,7 @@ export default function RegisterComponent() {
         setError("Registration failed. Please try again.");
       }
     } catch (err) {
+      console.error("Failed to register:", err);
       setError("Something went wrong while registering.");
     }
   };
@@ -52,7 +53,7 @@ export default function RegisterComponent() {
     <div className="flex min-h-screen flex-col items-center justify-center p-6 lg:flex-row lg:p-8">
       {/* Left Section: Logo and Info */}
       <div className="flex flex-col items-center justify-center p-4 lg:w-1/2">
-        <img
+        <Image
           alt="KaamGar"
           src="/kaamgar.png"
           className="h-48 w-auto lg:h-80"

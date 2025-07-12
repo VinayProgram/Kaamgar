@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import api from "@/lib/axios";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function KaamgarAuth() {
   const [isSignup, setIsSignup] = useState(false);
@@ -45,10 +46,12 @@ export default function KaamgarAuth() {
   return (
     <div className="relative flex items-center justify-center min-h-screen overflow-hidden">
       <div className="absolute inset-20">
-        <img
+        <Image
           src="/kaamgarback.avif"
           alt="Worker and Consumer"
           className="w-full h-full object-cover"
+          width={1000}
+          height={1000}
         />
         {/* Animated gradient overlay */}
         <div className="absolute inset-0 bg-gradient-overlay"></div>

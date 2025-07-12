@@ -1,7 +1,7 @@
 // app/jobs/page.tsx (or any Server Component)
 
 import api from "@/lib/axios";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {

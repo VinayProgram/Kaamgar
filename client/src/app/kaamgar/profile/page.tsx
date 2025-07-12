@@ -13,7 +13,6 @@ import { Label } from "@/components/ui/label";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 import { useState } from "react";
-import { UploadCloud } from "lucide-react";
 
 const mockUser = {
   name: "Ravi Kumar",

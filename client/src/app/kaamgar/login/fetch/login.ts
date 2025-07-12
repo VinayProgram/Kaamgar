@@ -1,6 +1,6 @@
 import api from "@/lib/axios";
-import { loginDTO, RegisterationDTO } from "../dto/registeration";
-import axios from "axios";
+import { loginDTO } from "../dto/registeration";
+
 
 export const loginAPI = async (data: loginDTO) =>{
     return await api.post("users/login-module", data)

@@ -1,7 +1,7 @@
 import api from "@/lib/axios";
 import { useQuery } from "@tanstack/react-query";
 
-export const getSessionConsumer = () => useQuery({
+export const useGetSessionConsumer = () => useQuery({
       queryKey: ['CONSUMER_SESSION'],
       queryFn: async () =>
         await api.post<SessionConsumer>('/consumers/login-module/check-auth').then((res) => res.data)
