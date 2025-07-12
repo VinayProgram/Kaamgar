@@ -6,9 +6,11 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import GraphQLJSON from 'graphql-type-json';
+import { CategoriesSkillsModule } from './categories-skills/categories-skills.module';
 
 @Module({
   imports: [JobsModule, AlertsModule,AuthModule,
+    CategoriesSkillsModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       resolvers: { JSON: GraphQLJSON },
       driver: ApolloDriver,

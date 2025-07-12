@@ -68,6 +68,7 @@ export class LoginModuleController {
     }
     return res.status(HttpStatus.OK).json({
       success: true,
+      data: authResult,
       message: 'User is authenticated',
     });
   }

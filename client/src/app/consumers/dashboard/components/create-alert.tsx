@@ -6,13 +6,18 @@ import { gql, useMutation } from '@apollo/client';
 import { CreateAlertDto } from "../graphql/create-alert.dto"; // Ensure this path is correct
 import { UserType } from "@/constants/enums"; // Ensure this path is correct
 import { createAlert } from "../graphql/create-alert";
+import { useCategories, useSkills } from "../graphql/get-categories.dto";
+import { getSessionConsumer } from "../../common-api/get-session";
 
 export default function CreateAlertForm() {
   const { setComponent } = React.useContext(DialogContext);
   const [latitude, setLatitude] = useState<number | string>("");
   const [longitude, setLongitude] = useState<number | string>("");
   const [locationError, setLocationError] = useState<string | null>(null);
-
+  const { categories } = useCategories();
+  const { skills } = useSkills();
+  const { data: session } = getSessionConsumer();
+  console.log("session",session)
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -116,10 +121,11 @@ export default function CreateAlertForm() {
           className="w-full border border-gray-300 px-4 py-2 rounded-md focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
           required
         >
-          <option value="">Select a category</option>
-          <option value="12830b0e-5a1d-43d4-b367-effef150bbc9">Plumbing</option>
-          <option value="b0d45612-804e-4512-8d66-7e91cde0b6dd">Electrical</option>
-          <option value="dbf4a5f1-e72d-47f2-a2af-e3339f346578">Carpentry</option>
+          {categories.map((category) => (
+            <option key={category.id} value={category.id}>{category.name}</option>
+          ))}
+          
+          
           {/* Add more categories dynamically */}
         </select>
       </div>
@@ -134,8 +140,9 @@ export default function CreateAlertForm() {
           required
         >
           <option value="">Select a skill</option>
-          <option value="skillId1">Drain Cleaning</option>
-          <option value="skillId2">Fixture Repair</option>
+          {skills.map((skill) => (
+            <option key={skill.id} value={skill.id}>{skill.name}</option>
+          ))}
           {/* Add more skills dynamically */}
         </select>
       </div>

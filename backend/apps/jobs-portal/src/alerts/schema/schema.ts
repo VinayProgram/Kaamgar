@@ -1,5 +1,5 @@
 import { pgTable, uuid, text, numeric, boolean, timestamp, geometry } from "drizzle-orm/pg-core";
-import { categories } from "../../jobs/schema/schema";
+import { categories, skills } from "../../categories-skills/schema/schema";
 
 
 export const alerts = pgTable("alerts", {
@@ -11,6 +11,7 @@ export const alerts = pgTable("alerts", {
   pincode: text("pincode"),
   minPrice: numeric("min_price"),
   maxPrice: numeric("max_price"),
+  skillId: uuid("skill_id").references(() => skills.id, { onDelete: "set null" }),
   categoryId: uuid("category_id").references(() => categories.id, { onDelete: "set null" }),
   active: boolean("active").default(true),
   selfDestroy: boolean("self_destroy").default(false),

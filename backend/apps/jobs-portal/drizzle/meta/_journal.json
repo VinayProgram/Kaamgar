@@ -15,6 +15,13 @@
       "when": 1752124011303,
       "tag": "0001_unknown_sleeper",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1752311748822,
+      "tag": "0002_broad_hellcat",
+      "breakpoints": true
     }
   ]
 }
