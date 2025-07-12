@@ -7,7 +7,7 @@ import { CreateAlertDto } from "./create-alert.dto";
 export const CREATE_ALERT = gql`
   mutation CreateAlert($data: CreateAlertInput!) {
     createAlert(data: $data) {
-      active
+        id
     }
   }
 `;

@@ -9,7 +9,6 @@ export class AlertsResolver {
   async createAlert(
     @Args('data') data: CreateAlertInput
   ) {
-    console.log(data)
     return await this.alertsService.createAlert(data);
   }
 

@@ -17,7 +17,6 @@ export default function CreateAlertForm() {
   const { categories } = useCategories();
   const { skills } = useSkills();
   const { data: session } = getSessionConsumer();
-  console.log("session",session)
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -67,7 +66,7 @@ export default function CreateAlertForm() {
       maxPrice: formData.get("maxPrice") ? parseFloat(formData.get("maxPrice") as string) : 0,
       active: true,
       address: formData.get("address") as string || "", // <-- CORRECTED: Get address directly from formData
-      alertBy: "someUserId", // You'll need to populate this dynamically from user context
+      alertBy: session?.data.userId || "", // You'll need to populate this dynamically from user context
       alertUserType: UserType.CONSUMER,
       selfDestroy: false,
     };

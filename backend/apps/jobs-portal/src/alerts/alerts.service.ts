@@ -20,10 +20,12 @@ export class AlertsService {
     alertUserType: string;
   }) {
     // @ts-ignore
-    return db.insert(alerts).values({
+    const alert = await db.insert(alerts).values({
       ...data,
       location:sql`ST_MakePoint(${data.location.longitude}, ${data.location.latitude})`
     }).returning();
+
+    return alert[0];
   }
 
   async getAlertById(id: string) {
