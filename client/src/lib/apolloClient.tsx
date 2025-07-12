@@ -2,17 +2,20 @@
 import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client';
 import { pathToserver } from './axios';
 
-const httpLink = new HttpLink({
+let httpLink: HttpLink;
+if(typeof window !== 'undefined'){
+ httpLink = new HttpLink({
   uri: pathToserver + '/jobs/graphql', // Your GraphQL endpoint
   credentials: 'include',
   headers:{
     'Content-Type': 'application/json',
-    'cookie': document.cookie
+    'cookie': document.cookie||""
   }
 });
+}
 
 export const client = new ApolloClient({
-  link: httpLink,
+  link: httpLink!,
   cache: new InMemoryCache(),
 });
 

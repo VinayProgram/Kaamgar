@@ -1,6 +1,7 @@
 
 import { Field, Int, ObjectType ,InputType, Float, ID } from '@nestjs/graphql';
 import GraphQLJSON from 'graphql-type-json';
+import { Category, Skill } from '../../categories-skills/models/categories-skill.entity';
 
 @ObjectType()
 export class Alert {
@@ -47,7 +48,17 @@ export class Alert {
   categoryId?: string;
 }
 
+@ObjectType()
+export class PublicAlertJobs {
+  @Field(() => Alert)
+  alerts: Alert;
 
+  @Field(() => Skill)
+  skills: Skill;
+
+  @Field(() => Category)
+  categories: Category;
+}
 
 @InputType()
 export class CreateAlertInput {

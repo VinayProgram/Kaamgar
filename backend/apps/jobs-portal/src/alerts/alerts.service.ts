@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { eq, sql } from 'drizzle-orm';
 import { db } from '../db';
 import { alerts } from './schema/schema';
+import { jobs } from '../jobs/schema/schema';
+import { categories, skills } from '../categories-skills/schema/schema';
 
 @Injectable()
 export class AlertsService {
@@ -33,7 +35,14 @@ export class AlertsService {
   }
 
   async getAllAlerts() {
-    return await db.select().from(alerts);
+    const alertData = await db.select().from(alerts);
+    return alertData;
+  }
+
+  async getAllPublicAlerts_Jobs() {
+    const alertData = await db.select().from(alerts).innerJoin(skills, eq(alerts.skillId, skills.id)).innerJoin(categories, eq(alerts.categoryId, categories.id)).where(eq(alerts.active, true));
+    const jobsData = await db.select().from(jobs).innerJoin(skills, eq(jobs.skillId, skills.id)).innerJoin(categories, eq(jobs.categoryId, categories.id)).where(eq(jobs.isActive, true));
+    return [...alertData, ...jobsData];
   }
 
   async updateAlert(id: string, updates: Partial<typeof alerts.$inferInsert>) {

@@ -210,6 +210,9 @@ importers:
       graphql:
         specifier: ^16.11.0
         version: 16.11.0
+      graphql-tag:
+        specifier: ^2.12.6
+        version: 2.12.6(graphql@16.11.0)
       lucide-react:
         specifier: ^0.516.0
         version: 0.516.0(react@19.1.0)
