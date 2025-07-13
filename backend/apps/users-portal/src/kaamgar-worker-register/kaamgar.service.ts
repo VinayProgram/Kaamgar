@@ -11,6 +11,7 @@ export class KaamgarRegisterService {
         const email = payload.email.toLowerCase().trim();
         return await db.insert(schemaTables.users_login.kaamgarUsers).values({
             ...payload,
+            userId: crypto.randomUUID(),
             email: email,
             passwordHash: encryptedPassword,
             isVerified: "pending", 

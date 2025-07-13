@@ -6,8 +6,10 @@ import { Button } from "@/components/ui/button";
 import { loginAPI, sessionAPI } from "../fetch/login";
 import React from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function LoginComponent() {
+  const router = useRouter()
   React.useEffect(()=>{
     checkSession()
   },[])
@@ -21,7 +23,7 @@ export default function LoginComponent() {
     const password = formData.get("password") as string;
     const result = await loginAPI({ email, password })
     if (result.status === 200) {
-      // Handle successful login, e.g., redirect or show a success message
+      router.push('/kaamgar/dashboard')
       console.log("Login successful:", result.data);
     } else {
       // Handle login failure, e.g., show an error message
@@ -35,6 +37,8 @@ export default function LoginComponent() {
           alt="KaamGar"
           src="/kaamgar.png"
           className="mx-auto h-40 w-auto"
+          width={100}
+          height={100}
         />
         <h2 className=" text-center text-2xl/9 font-bold tracking-tight text-gray-900">
           Sign in to your account

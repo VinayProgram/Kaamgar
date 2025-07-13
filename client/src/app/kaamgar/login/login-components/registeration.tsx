@@ -57,6 +57,8 @@ export default function RegisterComponent() {
           alt="KaamGar"
           src="/kaamgar.png"
           className="h-48 w-auto lg:h-80"
+          width={100}
+          height={100}
         />
         <h2 className="mt-6 text-center text-3xl font-extrabold tracking-tight text-gray-900">
           Join KaamGar Today!
@@ -114,7 +116,7 @@ export default function RegisterComponent() {
 
             <p className="mt-6 text-center text-sm text-gray-500">
               Already have an account?{" "}
-              <a href="/login" className="font-semibold text-indigo-600 hover:text-indigo-500">
+              <a href="/kaamgar/login" className="font-semibold text-indigo-600 hover:text-indigo-500">
                 Sign in here
               </a>
             </p>

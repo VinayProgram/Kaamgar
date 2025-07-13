@@ -20,7 +20,7 @@ const DailogContextProvider = (props: React.PropsWithChildren) => {
             {props.children}   {/* Always render your app! */}
             {Component && (
                 <Dialog open onOpenChange={()=>setComponent(null)}>
-                    <DialogContent>
+                    <DialogContent className="max-w-full max-h-full scrollbar-hide overflow-y-auto">
                         {Component}
                     </DialogContent>
                 </Dialog>

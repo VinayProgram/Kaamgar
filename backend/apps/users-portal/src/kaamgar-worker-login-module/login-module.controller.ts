@@ -7,12 +7,14 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 import { LoginModuleService } from './login-module.service';
+import { Public } from '@app/guards/gaurds.public.service';
 
 @Controller('login-module')
 export class LoginModuleController {
   constructor(private readonly loginModuleService: LoginModuleService) { }
 
   @Post('/')
+  @Public()
   async login(
     @Body() body: { email: string; password: string },
     @Res() res: Response,
