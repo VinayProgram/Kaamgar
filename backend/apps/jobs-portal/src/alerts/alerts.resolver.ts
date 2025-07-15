@@ -1,7 +1,9 @@
-import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
+import { Args, Context, Mutation, Query, Resolver } from "@nestjs/graphql";
 import { AlertsService } from "./alerts.service";
 import { Alert, CreateAlertInput,PublicAlertJobs } from "./models/alerts.model";
 import { Public } from "@app/guards/gaurds.public.service";
+import { Req, UnauthorizedException } from "@nestjs/common";
+import { Request } from "express";
 @Resolver(() => Alert)
 export class AlertsResolver {
   constructor(private readonly alertsService: AlertsService) {}
@@ -24,4 +26,13 @@ export class AlertsResolver {
     return await this.alertsService.getAllPublicAlerts_Jobs();
   }
 
+  @Query(() => [Alert])
+  async GetAllAlertsByUserId(@Context() context: {req: Request}){
+    const userId = context.req.user?.userId;
+
+    if(!userId){
+      throw new UnauthorizedException('User not found');
+    }
+    return await this.alertsService.getAlertsByUserId(userId);
+  }
 }

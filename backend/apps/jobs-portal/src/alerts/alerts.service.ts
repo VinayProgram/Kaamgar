@@ -57,4 +57,8 @@ export class AlertsService {
   async deleteAlert(id: string) {
     return db.delete(alerts).where(eq(alerts.id, id)).returning().execute();
   }
+
+  async getAlertsByUserId(userId: string) {
+    return await db.select().from(alerts).where(eq(alerts.alertBy, userId))
+  }
 }

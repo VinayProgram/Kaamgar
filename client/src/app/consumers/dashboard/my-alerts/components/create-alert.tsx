@@ -6,7 +6,7 @@ import { CreateAlertDto } from "../graphql/create-alert.dto"; // Ensure this pat
 import { UserType } from "@/constants/enums"; // Ensure this path is correct
 import { createAlert } from "../graphql/create-alert";
 import { useCategories, useSkills } from "../graphql/get-categories.dto";
-import { useGetSessionConsumer } from "../../common-api/get-session";
+import { useGetSessionConsumer } from "../../../common-api/get-session";
 
 export default function CreateAlertForm() {
   const { setComponent } = React.useContext(DialogContext);

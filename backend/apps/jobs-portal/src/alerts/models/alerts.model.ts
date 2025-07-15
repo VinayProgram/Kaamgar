@@ -26,8 +26,8 @@ export class Alert {
   @Field({ nullable: true })
   maxPrice?: number;
 
-  @Field({ nullable: true })
-  location?: string; // Or a custom scalar for GeoJSON/WKT
+  @Field(() => GraphQLJSON, { nullable: true })
+  location?: {longitude: number, latitude: number}; 
 
   @Field()
   active: boolean;

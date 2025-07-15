@@ -14,6 +14,7 @@ import { CategoriesSkillsModule } from './categories-skills/categories-skills.mo
     GraphQLModule.forRoot<ApolloDriverConfig>({
       resolvers: { JSON: GraphQLJSON },
       driver: ApolloDriver,
+      context: ({ req }) => ({ req }),
       autoSchemaFile: true,
       sortSchema: true,
       playground: true,

@@ -23,6 +23,7 @@ export class AuthGuard implements CanActivate {
 
     const token = this.getTokenFromCookie(request);
     if (token) {
+      // console.log(token)  
       request.user = token; // verified payload
     } else {
       console.log('No valid token found in cookies');
@@ -36,7 +37,6 @@ export class AuthGuard implements CanActivate {
    * Get request object for REST or GraphQL
    */
   private getRequest(context: ExecutionContext): Request {
-    console.log(context.getType())
     if (context.getType() === 'http') {
       return context.switchToHttp().getRequest();
     } else if (context.getType()==='graphql' as string ) {

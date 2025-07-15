@@ -1,6 +1,6 @@
 // lib/mutations/useCreateAlert.ts
 'use client';
-import { client } from "../../../../lib/apolloClient";
+import { client } from "../../../../../lib/apolloClient";
 import { gql } from '@apollo/client';
 
 

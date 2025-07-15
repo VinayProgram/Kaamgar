@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input"
 import { User, PlusCircle, Briefcase, Bell } from "lucide-react"
 import { DialogContext } from "@/app/context/dailog-context"
 import React from "react"
-import CreateAlert from "./create-alert"
+import CreateAlert from "../my-alerts/components/create-alert"
 
 export default function NavbarUsers() {
   const DailogContext = React.useContext(DialogContext)
