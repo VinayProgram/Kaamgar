@@ -1,21 +1,25 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateCategoriesSkillInput } from './models/create-categories-skill.input';
 import { UpdateCategoriesSkillInput } from './models/update-categories-skill.input';
 import { categories, skills } from './schema/schema';
-import { db } from '../db';
+import { Database, DATABASE_CONNECTION } from '../db/database-connection.module';
 
 @Injectable()
 export class CategoriesSkillsService {
+  constructor(
+    @Inject(DATABASE_CONNECTION) private readonly db: Database
+  ) { }
+
   create(createCategoriesSkillInput: CreateCategoriesSkillInput) {
     return 'This action adds a new categoriesSkill';
   }
 
   async findAllskills() {
-    return await db.select().from(skills);
+    return await this.db.select().from(skills);
   }
 
   async findAllcategories() {
-    return await db.select().from(categories);
+    return await this.db.select().from(categories);
   }
 
   findOne(id: number) {

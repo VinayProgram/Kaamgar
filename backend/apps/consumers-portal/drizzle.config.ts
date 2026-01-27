@@ -6,7 +6,7 @@ export default defineConfig({
   schema: './src/**/*.ts',
   dialect: 'postgresql',
   dbCredentials: {
-    url: process.env.DATABASE_URL_CONSUMERS!,
+    url: process.env.DATABASE_URL_CONSUMERS! || "postgresql://postgres:password@localhost:2011/postgres",
   },
   strict: false,
 }) satisfies Config;

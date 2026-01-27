@@ -1,18 +1,21 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { eq } from 'drizzle-orm';
-import { db } from '../db';
+import { Database, DATABASE_CONNECTION } from '../db/database-connection.module';
 import { schemaTables } from '../common/importHelpers';
 import { compareHash, signToken } from 'libs/encryption';
 
 
 @Injectable()
 export class LoginModuleService {
-    constructor() {}
+    constructor(
+        @Inject(DATABASE_CONNECTION) private readonly db: Database
+    ) { }
 
-    async login(payload: { email: string; password: string }){
+
+    async login(payload: { email: string; password: string }) {
         payload.email = payload.email.toLowerCase().trim();
-        const data = await db.select().from(schemaTables.users_login.kaamgarUsers).where(eq(schemaTables.users_login.kaamgarUsers.email,payload.email))
-        if(data.length === 0) {
+        const data = await this.db.select().from(schemaTables.users_login.kaamgarUsers).where(eq(schemaTables.users_login.kaamgarUsers.email, payload.email))
+        if (data.length === 0) {
             return {
                 status: "error",
                 message: "User not found",
@@ -34,8 +37,8 @@ export class LoginModuleService {
             isVerified: user.isVerified,
             id: user.id
         },
-        "YourSecretKeyHere",
-    )
+            "YourSecretKeyHere",
+        )
         return {
             status: "success",
             message: "Login successful",
@@ -43,7 +46,7 @@ export class LoginModuleService {
                 email: user.email,
                 token: jwt, // In a real application, generate a JWT token here
             }
-        };  
+        };
     }
 
 }

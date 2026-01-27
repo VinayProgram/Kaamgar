@@ -7,7 +7,7 @@ import { IS_PUBLIC_KEY } from './gaurds.public.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private readonly reflector: Reflector) {}
+  constructor(private readonly reflector: Reflector) { }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     // Check for @Public() decorator
@@ -16,6 +16,7 @@ export class AuthGuard implements CanActivate {
       context.getClass(),
     ]);
 
+    console.log(context.getType())
     if (isPublic) return true;
 
     // Handle both REST and GraphQL
@@ -39,7 +40,7 @@ export class AuthGuard implements CanActivate {
   private getRequest(context: ExecutionContext): Request {
     if (context.getType() === 'http') {
       return context.switchToHttp().getRequest();
-    } else if (context.getType()==='graphql' as string ) {
+    } else if (context.getType() === 'graphql' as string) {
       const gqlCtx = GqlExecutionContext.create(context);
       return gqlCtx.getContext().req;
     }

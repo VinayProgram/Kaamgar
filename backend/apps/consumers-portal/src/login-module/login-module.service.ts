@@ -1,15 +1,19 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { signupDtoSchema } from './types/login.dto';
 import { eq } from 'drizzle-orm';
-import { db } from '../db';
+import { Database, DATABASE_CONNECTION } from '../db/database-connection.module';
 import { schemaTables } from '../common/importHelpers';
 import { compareHash, hashString, signToken, verifyToken } from 'libs/encryption';
 
 @Injectable()
 export class LoginModuleService {
+    constructor(
+        @Inject(DATABASE_CONNECTION) private readonly db: Database
+    ) { }
+
     async signup(signupDto: signupDtoSchema) {
-        const encryptedPassword =await hashString(signupDto.password);
-        return await db.insert(schemaTables.users_login.consumers).values({
+        const encryptedPassword = await hashString(signupDto.password);
+        return await this.db.insert(schemaTables.users_login.consumers).values({
             fullName: signupDto.fullName,
             email: signupDto.email,
             phoneNumber: signupDto.phoneNumber,
@@ -17,15 +21,14 @@ export class LoginModuleService {
             createdAt: new Date(),
             updatedAt: new Date(),
             lastLoginAt: null,
-        }).returning({email:schemaTables.users_login.consumers.email});
+        }).returning({ email: schemaTables.users_login.consumers.email });
     }
 
     // Implement login logic here
     async login(loginDto: { email: string; password: string }) {
-        const user = await db.select().from(schemaTables.users_login.consumers)
+        const user = await this.db.select().from(schemaTables.users_login.consumers)
             .where(eq(schemaTables.users_login.consumers.email, loginDto.email)).limit(1);
-       
-            if (user.length === 0) {
+        if (user.length === 0) {
             throw new Error('User not found');
         }
         const isPasswordValid = await compareHash(loginDto.password, user[0].passwordHash);
@@ -39,8 +42,8 @@ export class LoginModuleService {
             phoneNumber: user[0].phoneNumber,
             type: 'consumer',
         },
-        'hehehehe'
-    )
+            'hehehehe'
+        )
         return {
             email: loginDto.email,
             token: token,
@@ -48,9 +51,7 @@ export class LoginModuleService {
     }
 
     async checkAuth(token: string) {
-        return await verifyToken(token,'hehehehe')
-        // This method can be used to check if the user is authenticated
-        // You can implement your logic here, like checking a session or token
-        return { message: 'User is authenticated' };
+        return await verifyToken(token, 'hehehehe')
     }
 }
+

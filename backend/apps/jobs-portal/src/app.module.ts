@@ -7,9 +7,15 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import GraphQLJSON from 'graphql-type-json';
 import { CategoriesSkillsModule } from './categories-skills/categories-skills.module';
+import { DatabaseConnectionModule } from './db/database-connection.module';
 
 @Module({
-  imports: [JobsModule, AlertsModule,AuthModule,
+  imports: [
+    DatabaseConnectionModule,
+    JobsModule,
+    AlertsModule,
+    AuthModule,
+
     CategoriesSkillsModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       resolvers: { JSON: GraphQLJSON },
@@ -23,4 +29,4 @@ import { CategoriesSkillsModule } from './categories-skills/categories-skills.mo
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule { }
