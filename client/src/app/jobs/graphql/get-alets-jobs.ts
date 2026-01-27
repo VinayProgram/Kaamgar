@@ -38,10 +38,10 @@ export async function getAlertsJobsPublic() {
 
 import { useQuery } from '@apollo/client';
 export function useAlertsJobsPublic() {
-  const { data, loading, error, refetch } = useQuery<{ alerts: GetAllPublicAlerts_Jobs[] }>(GET_ALERTS_JOBS_PUBLIC);
+  const { data, loading, error, refetch } = useQuery<{ GetAllPublicAlerts_Jobs: any[] }>(GET_ALERTS_JOBS_PUBLIC);
 
   return {
-        alerts: data?.alerts || [],
+    alerts: data?.GetAllPublicAlerts_Jobs || [],
     loading,
     error,
     refetch,

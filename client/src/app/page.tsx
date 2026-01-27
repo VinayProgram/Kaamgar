@@ -17,66 +17,42 @@ import {
   ShieldCheck,
   Globe
 } from 'lucide-react';
-import api from '@/lib/axios';
+import { useAlertsJobsPublic } from './jobs/graphql/get-alets-jobs';
 
 interface Job {
   id: string;
   title: string;
   description: string;
-  minPrice?: number;
-  maxPrice?: number;
+  minPrice?: number | string;
+  maxPrice?: number | string;
   location?: string;
 }
 
 export default function DashboardLandingPage() {
   const [scrollY, setScrollY] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [jobs, setJobs] = useState<Job[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { alerts: rawAlerts, loading: jobsLoading, error: jobsError } = useAlertsJobsPublic();
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener('scroll', handleScroll);
-    fetchJobs();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const fetchJobs = async () => {
-    try {
-      const res = await api.post('/jobs/graphql', {
-        query: `query GetAllPublicAlerts_Jobs {
-          GetAllPublicAlerts_Jobs {
-            alerts {
-              description
-              id
-              minPrice
-              title
-              maxPrice
-            }
-          }
-        }`
-      });
-      // The structure from jobs/page.tsx: res.data.data.GetAllPublicAlerts_Jobs
-      const fetched = res.data?.data?.GetAllPublicAlerts_Jobs?.map((item: any) => ({
-        id: item.alerts.id,
-        title: item.alerts.title,
-        description: item.alerts.description,
-        minPrice: item.alerts.minPrice,
-        maxPrice: item.alerts.maxPrice,
-      })) || [];
-      setJobs(fetched.slice(0, 3)); // Just show top 3
-    } catch (err) {
-      console.error("Failed to fetch jobs:", err);
-      // Mock data if API fails to show something premium
-      setJobs([
-        { id: '1', title: 'Experienced Electrician', description: 'Need urgent wiring fix for a residence in Mumbai.', location: 'Mumbai' },
-        { id: '2', title: 'Professional House Painter', description: 'Painting 3BHK apartment with premium finish.', location: 'Delhi' },
-        { id: '3', title: 'Local Delivery Partner', description: 'Immediate requirement for delivery packages in Bengaluru.', location: 'Bengaluru' },
-      ]);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Map and slice the alerts from the hook, with fallback to mock data
+  const jobs: Job[] = rawAlerts.length > 0
+    ? rawAlerts.slice(0, 3).map((item: any) => ({
+      id: item.alerts.id,
+      title: item.alerts.title,
+      description: item.alerts.description,
+      minPrice: item.alerts.minPrice,
+      maxPrice: item.alerts.maxPrice,
+    }))
+    : (!jobsLoading && !jobsError ? [] : [
+      { id: '1', title: 'Experienced Electrician', description: 'Need urgent wiring fix for a residence in Mumbai.', location: 'Mumbai' },
+      { id: '2', title: 'Professional House Painter', description: 'Painting 3BHK apartment with premium finish.', location: 'Delhi' },
+      { id: '3', title: 'Local Delivery Partner', description: 'Immediate requirement for delivery packages in Bengaluru.', location: 'Bengaluru' },
+    ]);
 
   return (
     <>
@@ -218,7 +194,7 @@ export default function DashboardLandingPage() {
             </div>
 
             <div className="grid md:grid-cols-3 gap-6">
-              {loading ? (
+              {jobsLoading ? (
                 [1, 2, 3].map(i => (
                   <div key={i} className="h-48 bg-white/5 rounded-2xl animate-pulse" />
                 ))
