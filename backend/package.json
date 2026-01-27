@@ -9,7 +9,7 @@
     "build": "nest build",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
-    "start:dev": "concurrently -n consumers,jobs,users -c green,blue,magenta \"pnpm run consumers:dev\" \"pnpm run jobs:dev\" \"pnpm run users:dev\"",
+    "dev": "concurrently -n consumers,jobs,users -c green,blue,magenta \"pnpm run consumers:dev\" \"pnpm run jobs:dev\" \"pnpm run users:dev\"",
     "consumers:dev": "nest start --watch consumers-portal",
     "jobs:dev": "nest start --watch jobs-portal",
     "users:dev": "nest start --watch users-portal",
